@@ -1,5 +1,8 @@
 FROM python:3
 
+RUN groupadd -r pyadmin && useradd -r -g pyadmin -s /bin/false pyadmin
+USER pyadmin
+
 COPY Pipfile Pipfile.lock ./
 RUN pip install pipenv && pipenv install --system --deploy
 
