@@ -1,7 +1,7 @@
 FROM python:3
 
 RUN groupadd pyadmin && \
-    useradd -g pyadmin -s /bin/false pyadmin && \
+    useradd -d -g pyadmin -s /bin/false pyadmin && \
     chown -R pyadmin:pyadmin /home/pyadmin
 USER pyadmin
 
