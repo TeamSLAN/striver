@@ -1,6 +1,8 @@
 FROM python:3
 
-RUN groupadd pyadmin && useradd -g pyadmin -s /bin/false pyadmin
+RUN groupadd pyadmin && \
+    useradd -g pyadmin -s /bin/false pyadmin && \
+    chown -R pyadmin:pyadmin /home/pyadmin
 USER pyadmin
 
 COPY Pipfile Pipfile.lock ./
