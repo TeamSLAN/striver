@@ -1,10 +1,6 @@
 FROM python:3
 
-RUN groupadd pyadmin && \
-    useradd -d -g pyadmin -s /bin/false pyadmin && \
-    chown -R pyadmin:pyadmin /home/pyadmin
-USER pyadmin
-
+ENV PIP_ROOT_USER_ACTION=ignore
 COPY Pipfile Pipfile.lock ./
 RUN pip install pipenv && pipenv install --system --deploy
 
