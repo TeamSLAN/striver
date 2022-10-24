@@ -1,16 +1,15 @@
 FROM python:3
 
 ENV PIP_ROOT_USER_ACTION=ignore
-COPY Pipfile Pipfile.lock ./
-RUN pip install pipenv && pipenv install --system --deploy
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /usr/src/app
 COPY . .
 
 RUN pip install gunicorn
 
-# t2.micro has 1 physical core -> 3 workers
 CMD [ "gunicorn", \
-    "--workers", "3", \
+    "--workers", "1", \
     "--bind", "0.0.0.0:5000", \
     "striver:app" ]
