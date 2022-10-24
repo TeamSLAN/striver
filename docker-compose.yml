@@ -4,4 +4,4 @@ services:
     image: p4t8_striver_v1
     build: .
     ports:
-      - "8013:5000"
+      - "8013:8013"
