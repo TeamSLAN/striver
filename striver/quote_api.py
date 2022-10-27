@@ -38,8 +38,16 @@ def like():
     id = data["id"]
     # this goes inside of the dictionary quote data and finds the quote and adds one to the like
     quotedata[id]["likes"] += 1
-    return
+    return quotedata[id]["likes"]
 
+@app.route('/comment', methods=["POST"])
+def comment():
+    data=request.data
+    id = data["id"]
+    name = data["name"]
+    message = data["message"]
+    quotedata[id]["comments"].append({"name": name, "message":message})
+    return quotedata[id]["comments"]
 
 @app.route('/dislike', methods=["POST"])  # Dislike post route
 def dislike():
@@ -47,7 +55,7 @@ def dislike():
     # uses the data quote and adds one to the dislike
     id = data["id"]
     quotedata[id]["dislikes"] += 1
-    return
+    return quotedata[id]["dislikes"]
 
 
 @app.route('/quote', methods=["GET"])
