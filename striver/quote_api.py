@@ -18,10 +18,11 @@ quoteslist = [
 
 # quoteslist sets the list of quotes
 quotedata = {}  # sets an empty dictionary that will get filled up
-for i,item in enumerate(quoteslist):  # for loop that goes over every quote inside of quotes list
+# for loop that goes over every quote inside of quotes list
+for i, item in enumerate(quoteslist):
     # inside of the dictionary the key is the quote and this loop adds likes and dislikes as the key for every quote
     quotedata[i] = {"likes": 0, "dislikes": 0, "comments": [], "quote": item}
-#Uses enumerate function to number the quoteslist and convert it into a set of numbered pairs
+# Uses enumerate function to number the quoteslist and convert it into a set of numbered pairs
 
 
 # this is main route that returns works so that we know the backend is working
@@ -34,28 +35,30 @@ def index():
 @app.route('/like', methods=["POST"])
 def like():
     # this sets data equal to the dictionary with a quote and the actuall quote
-    data = request.data
+    data = request.json
     id = data["id"]
     # this goes inside of the dictionary quote data and finds the quote and adds one to the like
     quotedata[id]["likes"] += 1
-    return quotedata[id]["likes"]
+    return {"likes": quotedata[id]["likes"]}
+
 
 @app.route('/comment', methods=["POST"])
 def comment():
-    data=request.data
+    data = request.json
     id = data["id"]
     name = data["name"]
     message = data["message"]
-    quotedata[id]["comments"].append({"name": name, "message":message})
-    return quotedata[id]["comments"]
+    quotedata[id]["comments"].append({"name": name, "message": message})
+    return {"comments": quotedata[id]["comments"]}
+
 
 @app.route('/dislike', methods=["POST"])  # Dislike post route
 def dislike():
-    data = request.data  # sets the data variable equal to the quote and the actual quote
+    data = request.json  # sets the data variable equal to the quote and the actual quote
     # uses the data quote and adds one to the dislike
     id = data["id"]
     quotedata[id]["dislikes"] += 1
-    return quotedata[id]["dislikes"]
+    return {"dislikes": quotedata[id]["dislikes"]}
 
 
 @app.route('/quote', methods=["GET"])
