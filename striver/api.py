@@ -18,9 +18,10 @@ quoteslist = [
 
 # quoteslist sets the list of quotes
 quotedata = {}  # sets an empty dictionary that will get filled up
-for item in quoteslist:  # for loop that goes over every quote inside of quotes list
+for i,item in enumerate(quoteslist):  # for loop that goes over every quote inside of quotes list
     # inside of the dictionary the key is the quote and this loop adds likes and dislikes as the key for every quote
-    quotedata[item] = {"likes": 0, "dislikes": 0}
+    quotedata[i] = {"likes": 0, "dislikes": 0, "comments": [], "quote": item}
+#Uses enumerate function to number the quoteslist and convert it into a set of numbered pairs
 
 
 # this is main route that returns works so that we know the backend is working
@@ -34,8 +35,9 @@ def index():
 def like():
     # this sets data equal to the dictionary with a quote and the actuall quote
     data = request.data
+    id = data["id"]
     # this goes inside of the dictionary quote data and finds the quote and adds one to the like
-    quotedata[data["quote"]]["likes"] += 1
+    quotedata[id]["likes"] += 1
     return
 
 
@@ -43,14 +45,15 @@ def like():
 def dislike():
     data = request.data  # sets the data variable equal to the quote and the actual quote
     # uses the data quote and adds one to the dislike
-    quotedata[data["quote"]]["dislikes"] += 1
+    id = data["id"]
+    quotedata[id]["dislikes"] += 1
     return
 
 
 @app.route('/quote', methods=["GET"])
 def quote():
     # uses the random choice function to set the quote and info = to the actual quote
-    quote, info = random.choice(list(quotedata.items()))
+    id, info = random.choice(list(quotedata.items()))
     dic = {}  # sets the dic dictionary empty
-    dic[quote] = info  # sets the key quote = to the likes and dislikes as the term
+    dic[id] = info  # sets the key id = to the likes and dislikes as the term
     return dic  # returns the dictionary dic with the quotes and likes and dislikes
