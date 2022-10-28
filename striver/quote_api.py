@@ -44,13 +44,13 @@ def like():
 
 @app.route('/addComment', methods=["POST"])
 def add_comment():
-    data = request.json
+    data = request.json # retrieving the data from the frontend of who wrote the comment, and for what quote the comment is for, and what the commmment is
     id = data["id"]
     name = data["name"]
     message = data["message"]
-    uuid = uuid.uuid4()
-    quotedata[id]["comments"][uuid] = {"name": name, "message": message, "likes": 0, "dislikes":0}
-    return {"comments": quotedata[id]["comments"]}
+    uuid = uuid.uuid4() # assigns a uuid (a string of unique numbers and characters) to each new comment
+    quotedata[id]["comments"][uuid] = {"name": name, "message": message, "likes": 0, "dislikes":0} #adding the comment into quotedata
+    return {"comments": quotedata[id]["comments"]} #returning the comments to the frontend so it can update the website
 
 
 
