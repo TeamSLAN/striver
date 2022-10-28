@@ -1,7 +1,7 @@
 from . import app
 import random
 from flask import request
-
+import uuid
 # define quote list
 quoteslist = [
     "“Nature has given us all the pieces required to achieve exceptional wellness and health, but has left it to us to put these pieces together.”—Diane McLaren",
@@ -21,7 +21,7 @@ quotedata = {}  # sets an empty dictionary that will get filled up
 # for loop that goes over every quote inside of quotes list
 for i, item in enumerate(quoteslist):
     # inside of the dictionary the key is the quote and this loop adds likes and dislikes as the key for every quote
-    quotedata[i] = {"likes": 0, "dislikes": 0, "comments": [], "quote": item}
+    quotedata[i] = {"likes": 0, "dislikes": 0, "comments": {}, "quote": item}
 # Uses enumerate function to number the quoteslist and convert it into a set of numbered pairs
 
 
@@ -42,14 +42,16 @@ def like():
     return {"likes": quotedata[id]["likes"]}
 
 
-@app.route('/comment', methods=["POST"])
-def comment():
+@app.route('/addComment', methods=["POST"])
+def add_comment():
     data = request.json
     id = data["id"]
     name = data["name"]
     message = data["message"]
-    quotedata[id]["comments"].append({"name": name, "message": message})
+    uuid = uuid.uuid4()
+    quotedata[id]["comments"][uuid] = {"name": name, "message": message, "likes": 0, "dislikes":0}
     return {"comments": quotedata[id]["comments"]}
+
 
 
 @app.route('/dislike', methods=["POST"])  # Dislike post route
