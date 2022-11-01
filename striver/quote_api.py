@@ -44,14 +44,34 @@ def like():
 
 @app.route('/addComment', methods=["POST"])
 def add_comment():
-    data = request.json # retrieving the data from the frontend of who wrote the comment, and for what quote the comment is for, and what the commmment is
+    data = request.json  # retrieving the data from the frontend of who wrote the comment, and for what quote the comment is for, and what the commmment is
     id = data["id"]
     name = data["name"]
     message = data["message"]
-    uuid = uuid.uuid4() # assigns a uuid (a string of unique numbers and characters) to each new comment
-    quotedata[id]["comments"][uuid] = {"name": name, "message": message, "likes": 0, "dislikes":0} #adding the comment into quotedata
-    return {"comments": quotedata[id]["comments"]} #returning the comments to the frontend so it can update the website
+    # assigns a uuid (a string of unique numbers and characters) to each new comment
+    comment_id = str(uuid.uuid4())
+    quotedata[id]["comments"][comment_id] = {
+        "name": name, "message": message, "likes": 0, "dislikes": 0}  # adding the comment into quotedata
+    # returning the comments to the frontend so it can update the website
+    return {"comments": quotedata[id]["comments"]}
 
+
+@app.route('/likeComment', methods=["POST"])
+def like_comment():
+    data = request.json
+    quote_id = data["quote_id"]
+    comment_id = data["comment_id"]
+    quotedata[quote_id]["comments"][comment_id]["likes"] += 1
+    return {"likes": quotedata[quote_id]["comments"][comment_id]["likes"]}
+
+
+@app.route('/dislikeComment', methods=["POST"])
+def dislike_comment():
+    data = request.json
+    quote_id = data["quote_id"]
+    comment_id = data["comment_id"]
+    quotedata[quote_id]["comments"][comment_id]["dislikes"] += 1
+    return {"likes": quotedata[quote_id]["comments"][comment_id]["dislikes"]}
 
 
 @app.route('/dislike', methods=["POST"])  # Dislike post route
