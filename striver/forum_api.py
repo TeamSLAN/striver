@@ -34,4 +34,4 @@ def react():
     # gets the data that tells backend what reaction it is
     reaction = data["reaction"]
     goals[goal_id][reaction] += 1  # adds one reaction to the goal
-    return goals
+    return goals[goal_id]
