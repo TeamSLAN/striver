@@ -65,12 +65,15 @@ def like_comment():
     return {"likes": quotedata[quote_id]["comments"][comment_id]["likes"]}
 
 
-@app.route('/dislikeComment', methods=["POST"]) #post route for disliking comment
+# post route for disliking comment
+@app.route('/dislikeComment', methods=["POST"])
 def dislike_comment():
-    data = request.json #gets data from frontend
-    quote_id = data["quote_id"] #Finds which quote they are reffering to
-    comment_id = data["comment_id"] #finds which specific comment they disliked
-    quotedata[quote_id]["comments"][comment_id]["dislikes"] += 1 # goes in quote data to dislike the comment
+    data = request.json  # gets data from frontend
+    quote_id = data["quote_id"]  # Finds which quote they are reffering to
+    # finds which specific comment they disliked
+    comment_id = data["comment_id"]
+    # goes in quote data to dislike the comment
+    quotedata[quote_id]["comments"][comment_id]["dislikes"] += 1
     return {"likes": quotedata[quote_id]["comments"][comment_id]["dislikes"]}
 
 
@@ -92,29 +95,3 @@ def quote():
     dic = {}  # sets the dic dictionary empty
     dic[id] = info  # sets the key id = to the likes and dislikes as the term
     return dic  # returns the dictionary dic with the quotes and likes and dislikes
-
-#Goal Forum
-goals = {}
-
-@app.route('/getgoal', methods=["GET"]) #approute to give goal data to the frontend
-def getgoal():
-    return goals
-
-@app.route('/addgoal', methods=["POST"]) #Post route that adds goals to the forum
-def addgoal():
-    data= request.json #retrieves the data from the fronted, the goal, the person who wrote the goal
-    goal = data["goal"]
-    name = data["name"]
-    goal_id = str(uuid.uuid4()) #assigns each goal a specific uuid to differentiate the goals in the dictionary
-    goals[goal_id] = { #this adds an entry into the dictionary, adds the goal, along with the emoji reactions
-        "goal" : goal, "name" : name, "smileys": 0, "thumbs" : 0, "heart" : 0
-    }
-    return goals #returns the most recent goal to the frontend to keep website updated
-
-@app.route("/react", methods=["POST"]) #reaction route
-def react():
-    data=request.json #retrieves the data
-    goal_id = data["goal_id"]
-    reaction = data["reaction"] #gets the data that tells backend what reaction it is
-    goals[goal_id][reaction] += 1 #adds one reaction to the goal
-    return goals
