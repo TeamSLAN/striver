@@ -85,8 +85,10 @@ def dislike():
 
 @app.route('/quote', methods=["GET"])
 def quote():
+    prev = request.args.get('prev')
     # uses the random choice function to set the quote and info = to the actual quote
-    id, info = random.choice(list(quotedata.items()))
+    id, info = random.choice(
+        [item for item in list(quotedata.items()) if item[0] != prev])
     dic = {}  # sets the dic dictionary empty
     dic[id] = info  # sets the key id = to the likes and dislikes as the term
     return dic  # returns the dictionary dic with the quotes and likes and dislikes
